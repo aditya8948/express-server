@@ -1,4 +1,6 @@
 const express = require("express");
+const productRoutes = require("./routes/products");
+const categoryRoutes = require("./routes/categories");
 
 const app = express();
 
@@ -10,22 +12,13 @@ app.use((req, res, next) => {
     next();
 });
 
-// Products endpoints
-app.get("/products", (req, res) => {
-    res.send("Here is the list of all products.");
-});
+// Connect routers to main server file
+app.use("/products", productRoutes);
+app.use("/categories", categoryRoutes);
 
-app.post("/products", (req, res) => {
-    res.send("A new product has been added.");
-});
-
-// Categories endpoints
-app.get("/categories", (req, res) => {
-    res.send("Here is the list of all categories.");
-});
-
-app.post("/categories", (req, res) => {
-    res.send("A new category has been created.");
+// 404 Fallback for undefined routes
+app.use((req, res) => {
+    res.status(404).send("<h1>404 - Page Not Found</h1>");
 });
 
 const PORT = 4000;
